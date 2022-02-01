@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TODO-LIST</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <div id="main-container">
+      <h1>SIGNUP</h1>
+      <label>
+        Name
+        <input type="text" id="name-signup">
+      </label><br>
+      <label>
+        Email
+        <input type="email" id="email-signup">
+      </label><br>
+      <label>
+        Password
+        <input type="password" id="password-signup">
+      </label><br>
+      <button id="signup-button">SignUp</button>
+      <h2>LOGIN</h2>
+      <label>
+        Email
+        <input type="email" id="email-login">
+      </label><br>
+      <label>
+        Password
+        <input type="password" id="password-login">
+      </label><br>
+      <button id="login-button">Login</button>
+      <h3>Get All Users (Admin Only!)</h3>
+      <button id="get-users-button">Get Users</button><br>
+      <button id="logout-button">Logout</button>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./scripts/index.js"></script>
+</body>
+</html>
