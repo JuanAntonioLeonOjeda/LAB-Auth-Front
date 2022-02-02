@@ -27,6 +27,11 @@ signupButton.addEventListener('click', async function() {
     const response = await api.post('/auth/signup', newUser)
     localStorage.setItem('token', response.data.token)
     console.log(response.data)
+    if (newUser.role === 'user') {
+      userScreen(newUser)
+    } else if (newUser.role === 'admin') {
+      adminScreen(newUser)
+    }
   } catch (err) {
     console.error(err)
   }
@@ -41,6 +46,12 @@ loginButton.addEventListener('click', async function() {
     const response = await api.post('/auth/login', user)
     localStorage.setItem('token', response.data.token)
     console.log(response.data)
+    console.log(response.data.user.role)
+    if (response.data.user.role === 'user') {
+      userScreen(response.data.user)
+    } else if (response.data.user.role === 'admin') {
+      adminScreen(response.data.user)
+    }
   } catch (err) {
     console.error(err)
   }
@@ -63,3 +74,34 @@ logoutButton.addEventListener('click', function(){
   localStorage.removeItem('token')
 })
 
+function adminScreen(admin) {
+  clearScreen()
+  const parent = document.getElementById('main-container')
+  const welcome = document.createElement('h1')
+  welcome.innerText= `Welcome ${admin.name}!`
+  parent.appendChild(welcome)
+}
+
+function userScreen(user) {
+  clearScreen()
+  const parent = document.getElementById('main-container')
+  const welcome = document.createElement('h1')
+  welcome.innerText= `Welcome ${user.name}!`
+  const todoList = document.createElement('div')
+  todoList.setAttribute('id', 'todoList-container')
+  const todo = document.createElement('div')
+  todo.setAttribute('id', 'todo-container')
+  todo.innerHTML = `prueba: ${user.todos}`
+  parent.appendChild(welcome)
+  parent.appendChild(todoList)
+  todoList.appendChild(todo)
+}
+
+
+function clearScreen() {
+  const board = document.getElementById('main-container')
+  const childs = document.querySelectorAll('#main-container > *')
+  for (let i = 0; i < childs.length; i++) {
+      board.removeChild(childs[i])
+  }
+}

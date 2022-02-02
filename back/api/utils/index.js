@@ -19,7 +19,6 @@ function checkToken (req, res, next) {
 }
 
 function checkAdmin (req, res, next) {
-  console.log(res.locals.user.role)
   if (res.locals.user.role !== 'admin') {
     res.send('Error: User not authorized')
   } else {

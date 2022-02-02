@@ -3,7 +3,7 @@ const User = require('../models/user.model')
 
 async function getAllTodos(req, res) {
   try {
-    await User.findOne( { email: res.locals.user.email})
+    await User.findOne( { email: res.locals.user.email })
     .populate('todos')
     .then(user => {
       const list = user.todos.map(item => {
