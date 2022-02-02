@@ -1,6 +1,5 @@
 const Todo = require('../models/todo.model')
 const User = require('../models/user.model')
-const mongoose = require('mongoose')
 
 async function getAllTodos(req, res) {
   try {
@@ -8,7 +7,7 @@ async function getAllTodos(req, res) {
     .populate('todos')
     .then(user => {
       const list = user.todos.map(item => {
-        return item.todo
+        return { todo: item.todo, time: item.time, status: item.status }
       })
       res.json(list)
     })
@@ -21,7 +20,7 @@ async function getAllTodos(req, res) {
 async function getOneTodo(req, res) {
   try {
     const item = await Todo.findById(req.params.id)
-    res.json(item.todo)
+    res.json({ todo: item.todo, time: item.time, status: item.status })
   } catch (err) {
     res.json({ getOneTodoError: err})
   }
