@@ -1,6 +1,7 @@
 const signupName = document.getElementById('name-signup')
 const signupEmail = document.getElementById('email-signup')
 const signupPassword = document.getElementById('password-signup')
+const roleSelection = document.getElementById('role-select')
 
 const loginEmail = document.getElementById('email-login')
 const loginPassword = document.getElementById('password-login')
@@ -19,7 +20,8 @@ signupButton.addEventListener('click', async function() {
   const newUser = {
     name: signupName.value,
     email: signupEmail.value,
-    password: signupPassword.value
+    password: signupPassword.value,
+    role: roleSelection.value
   }
   try {
     const response = await api.post('/auth/signup', newUser)

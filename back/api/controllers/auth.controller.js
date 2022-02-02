@@ -12,7 +12,7 @@ async function signup (req, res) {
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1h'})
     res.status(200).json({ token })
   } catch (err) {
-    res.status(500).send(`Error creating user: ${err}`)
+    res.send(`Error creating user: ${err}`)
   }
 }
 

@@ -1,18 +1,19 @@
 const Todo = require('../models/todo.model')
+const User = require('../models/user.model')
+const mongoose = require('mongoose')
 
 async function getAllTodos(req, res) {
   try {
-    const user = res.locals.user
-    const todos = user.todos
-    /*const list = todos.map(id => {
-      Todo.findById(id)
-      .then(todo => {
-        console.log(todo.todo)
-        return todo.todo
+    await User.findOne( { email: res.locals.user.email})
+    .populate('todos')
+    .then(user => {
+      const list = user.todos.map(item => {
+        return item.todo
       })
-    })*/
-    res.json(todos)
+      res.json(list)
+    })
   } catch (err) {
+    console.log(err)
     res.json({ getAllTodosError: err })
   }
 }
@@ -50,9 +51,16 @@ async function updateTodo(req, res) {
 async function deleteTodo(req, res) {
   try {
     const user = res.locals.user
+    const newList = user.todos.filter(id => {
+      const str = id.toString()
+      return str !== req.params.id
+    })
+    user.todos = newList
+    user.save()
     const todo = await Todo.findByIdAndDelete(req.params.id)
     res.send('Todo deleted')
   } catch (err) {
+    console.log(err)
     res.json({ deteteTodoError: err})
   }
 }
