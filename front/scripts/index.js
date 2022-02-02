@@ -46,7 +46,6 @@ loginButton.addEventListener('click', async function() {
     const response = await api.post('/auth/login', user)
     localStorage.setItem('token', response.data.token)
     console.log(response.data)
-    console.log(response.data.user.role)
     if (response.data.user.role === 'user') {
       userScreen(response.data.user)
     } else if (response.data.user.role === 'admin') {
@@ -89,12 +88,45 @@ function userScreen(user) {
   welcome.innerText= `Welcome ${user.name}!`
   const todoList = document.createElement('div')
   todoList.setAttribute('id', 'todoList-container')
-  const todo = document.createElement('div')
-  todo.setAttribute('id', 'todo-container')
-  todo.innerHTML = `prueba: ${user.todos}`
+  const profile = document.createElement('div')
+  profile.innerHTML = `<div class = "profile">${user.email}</div><div class = "profile">Role: ${user.role}</div>`
+  const getTodosButton = document.createElement('button')
+  getTodosButton.setAttribute('id', 'getTodosButton')
+  getTodosButton.innerText = 'Your Todos'
   parent.appendChild(welcome)
+  parent.appendChild(profile)
   parent.appendChild(todoList)
-  todoList.appendChild(todo)
+  parent.appendChild(getTodosButton)
+
+  getTodosButton.addEventListener('click', async function () {
+    try {
+      const response = await api.get('/todos', {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      response.data.forEach(item => {
+        const todo = document.createElement('div')
+        todo.innerHTML = `<div class = "todo">Todo: ${item.todo}</div><div class = "todo">Time: ${item.time}</div><div class = "todo">Status: ${item.status}</div>`
+        const updateButton = document.createElement('button')
+        updateButton.setAttribute('id', 'update-button')
+        updateButton.innerText = 'Done'
+        const deleteButton = document.createElement('button')
+        deleteButton.setAttribute('id', 'delete-button')
+        deleteButton.innerText = 'Delete'
+        todoList.appendChild(todo)
+        todo.appendChild(updateButton)
+        todo.appendChild(deleteButton)
+
+        updateButton.addEventListener('click', async function () {
+          const response = await api.patch(`/todos/${item.id}`, { status: 'Done' }, )
+          console.log(response.data)
+        })
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  })
 }
 
 

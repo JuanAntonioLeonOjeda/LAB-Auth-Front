@@ -7,7 +7,7 @@ async function getAllTodos(req, res) {
     .populate('todos')
     .then(user => {
       const list = user.todos.map(item => {
-        return { todo: item.todo, time: item.time, status: item.status }
+        return { todo: item.todo, time: item.time, status: item.status, id: item.id }
       })
       res.json(list)
     })
@@ -39,6 +39,7 @@ async function addTodo(req, res) {
 }
 
 async function updateTodo(req, res) {
+  console.log('aquí')
   try {
     const todo = await Todo.findByIdAndUpdate(req.params.id, req.body)
     res.json({ message: 'Todo updated!', todo})

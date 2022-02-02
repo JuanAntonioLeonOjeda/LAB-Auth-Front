@@ -2,3 +2,31 @@ label {
   display: inline-block;
   width: 150px;
 }
+
+.profile {
+  display: inline-block;
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
+
+.todo {
+  display: inline-block;
+  margin-right: 50px;
+  margin-bottom: 20px;
+}
+
+#main-container {
+  margin: auto;
+}
+
+#update-button {
+  display: inline-block;
+  background-color: green;
+  color: white;
+  margin-right: 10px;
+}
+
+#delete-button {
+  display: inline-block;
+  background-color: red;
+}
