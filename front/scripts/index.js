@@ -126,6 +126,15 @@ function userScreen(user) {
         })
           console.log(response.data)
         })
+        deleteButton.addEventListener('click', async function () {
+          const response = await api.delete(`/todos/${item.id}`, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
+          todoList.removeChild(todo)
+          console.log(response.data)
+        })
       })
     } catch (err) {
       console.error(err)
