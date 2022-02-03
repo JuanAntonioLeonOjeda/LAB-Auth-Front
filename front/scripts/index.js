@@ -119,7 +119,11 @@ function userScreen(user) {
         todo.appendChild(deleteButton)
 
         updateButton.addEventListener('click', async function () {
-          const response = await api.patch(`/todos/${item.id}`, { status: 'Done' }, )
+          const response = await api.patch(`/todos/${item.id}`, { status: 'Done' }, {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        })
           console.log(response.data)
         })
       })

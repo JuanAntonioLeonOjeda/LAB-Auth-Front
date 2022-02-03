@@ -39,7 +39,6 @@ async function addTodo(req, res) {
 }
 
 async function updateTodo(req, res) {
-  console.log('aquí')
   try {
     const todo = await Todo.findByIdAndUpdate(req.params.id, req.body)
     res.json({ message: 'Todo updated!', todo})
