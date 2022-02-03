@@ -27,12 +27,13 @@ async function getOneTodo(req, res) {
 }
 
 async function addTodo(req, res) {
+  console.log(req.body)
   try {
     const todo = await Todo.create(req.body)
     const user = res.locals.user
     user.todos.push(todo.id)
     user.save()
-    res.json(todo)
+    res.json({ todo })
   } catch (err) {
     res.json({ addTodoError: err})
   }

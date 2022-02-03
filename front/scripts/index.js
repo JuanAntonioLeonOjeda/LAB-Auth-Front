@@ -82,21 +82,36 @@ function adminScreen(admin) {
 }
 
 function userScreen(user) {
-  clearScreen()
+  clearScreen('main-container', '#main-container > *')
   const parent = document.getElementById('main-container')
   const welcome = document.createElement('h1')
   welcome.innerText= `Welcome ${user.name}!`
+
   const todoList = document.createElement('div')
   todoList.setAttribute('id', 'todoList-container')
+
   const profile = document.createElement('div')
   profile.innerHTML = `<div class = "profile">${user.email}</div><div class = "profile">Role: ${user.role}</div>`
+
   const getTodosButton = document.createElement('button')
   getTodosButton.setAttribute('id', 'getTodosButton')
   getTodosButton.innerText = 'Your Todos'
+
+  const newTodo = document.createElement('div')
+  newTodo.setAttribute('id', 'new-todo-container')
+  newTodo.innerHTML = '<label>New Todo: <input type="text" id="new-todo-input"></label><br><label>Time: <input type="number" id="new-todo-time"></label><br>'
+
+  const addTodosButton = document.createElement('button')
+  addTodosButton.setAttribute('id', 'add-todo-button')
+  addTodosButton.innerText = 'Add Todo'
+
   parent.appendChild(welcome)
   parent.appendChild(profile)
   parent.appendChild(todoList)
   parent.appendChild(getTodosButton)
+  parent.appendChild(newTodo)
+  parent.appendChild(addTodosButton)
+
 
   getTodosButton.addEventListener('click', async function () {
     try {
@@ -105,8 +120,12 @@ function userScreen(user) {
           token: localStorage.getItem('token')
         }
       })
+      if (document.getElementById('todo-container')) {
+        clearScreen('todo-container', '#todo-container > *') //problema al volver a darle a 'Your Todos'. No aparecen todos
+      }
       response.data.forEach(item => {
         const todo = document.createElement('div')
+        todo.setAttribute('id', 'todo-container')
         todo.innerHTML = `<div class = "todo">Todo: ${item.todo}</div><div class = "todo">Time: ${item.time}</div><div class = "todo">Status: ${item.status}</div>`
         const updateButton = document.createElement('button')
         updateButton.setAttribute('id', 'update-button')
@@ -140,12 +159,31 @@ function userScreen(user) {
       console.error(err)
     }
   })
+
+  addTodosButton.addEventListener('click', async function () {
+    const todoName = document.getElementById('new-todo-input')
+    const todoTime = document.getElementById('new-todo-time')
+
+    try {
+      const response = api.post('/todos', {
+        todo: todoName.value,
+        time: todoTime.value
+      }, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      console.log(response.data)
+    } catch (err) {
+      console.error(err)
+    }
+  })
 }
 
 
-function clearScreen() {
-  const board = document.getElementById('main-container')
-  const childs = document.querySelectorAll('#main-container > *')
+function clearScreen(parent, children) {
+  const board = document.getElementById(parent)
+  const childs = document.querySelectorAll(children)
   for (let i = 0; i < childs.length; i++) {
       board.removeChild(childs[i])
   }
