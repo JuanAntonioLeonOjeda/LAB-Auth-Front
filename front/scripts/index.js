@@ -83,6 +83,7 @@ function adminScreen(admin) {
 
 function userScreen(user) {
   clearScreen('main-container', '#main-container > *')
+  
   const parent = document.getElementById('main-container')
   const welcome = document.createElement('h1')
   welcome.innerText= `Welcome ${user.name}!`
@@ -112,7 +113,7 @@ function userScreen(user) {
   parent.appendChild(newTodo)
   parent.appendChild(addTodosButton)
 
-
+  //Mostrar todos los Todos del usuario
   getTodosButton.addEventListener('click', async function () {
     try {
       const response = await api.get('/todos', {
@@ -120,23 +121,29 @@ function userScreen(user) {
           token: localStorage.getItem('token')
         }
       })
+      // Si la lista de Todos ya había sido mostrada, borrarla para volver a mostrarla actualizada
       if (document.getElementById('todo-container')) {
-        clearScreen('todo-container', '#todo-container > *') //problema al volver a darle a 'Your Todos'. No aparecen todos
+        clearScreen('todoList-container', '#todoList-container > *')
       }
+      
       response.data.forEach(item => {
         const todo = document.createElement('div')
         todo.setAttribute('id', 'todo-container')
         todo.innerHTML = `<div class = "todo">Todo: ${item.todo}</div><div class = "todo">Time: ${item.time}</div><div class = "todo">Status: ${item.status}</div>`
+
         const updateButton = document.createElement('button')
         updateButton.setAttribute('id', 'update-button')
         updateButton.innerText = 'Done'
+
         const deleteButton = document.createElement('button')
         deleteButton.setAttribute('id', 'delete-button')
         deleteButton.innerText = 'Delete'
+
         todoList.appendChild(todo)
         todo.appendChild(updateButton)
         todo.appendChild(deleteButton)
 
+        //Actualizar Estado del Todo
         updateButton.addEventListener('click', async function () {
           const response = await api.patch(`/todos/${item.id}`, { status: 'Done' }, {
           headers: {
@@ -145,6 +152,8 @@ function userScreen(user) {
         })
           console.log(response.data)
         })
+
+        //Eliminar Todo
         deleteButton.addEventListener('click', async function () {
           const response = await api.delete(`/todos/${item.id}`, {
           headers: {
@@ -160,6 +169,7 @@ function userScreen(user) {
     }
   })
 
+  //Añadir todo
   addTodosButton.addEventListener('click', async function () {
     const todoName = document.getElementById('new-todo-input')
     const todoTime = document.getElementById('new-todo-time')
@@ -180,7 +190,7 @@ function userScreen(user) {
   })
 }
 
-
+//Limpiar pantalla
 function clearScreen(parent, children) {
   const board = document.getElementById(parent)
   const childs = document.querySelectorAll(children)
