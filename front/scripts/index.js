@@ -265,3 +265,5 @@ for (let question in test) {
     console.log(test[question][option])
   }
 }
+
+console.log('hola')
