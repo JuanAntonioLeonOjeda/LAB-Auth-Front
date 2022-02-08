@@ -244,3 +244,24 @@ const api = axios.create({
 })
 
 loadStartScreen()
+
+const test = {
+  question1: {
+    a: 'resp1',
+    b: 'resp2',
+    c: 'resp3'
+  },
+  question2: {
+    a: 'resp4',
+    b: 'resp5',
+    c: 'resp6'
+  }
+}
+
+for (let question in test) {
+  console.log(question)
+  for (let option in test[question]) {
+    console.log(option)
+    console.log(test[question][option])
+  }
+}
