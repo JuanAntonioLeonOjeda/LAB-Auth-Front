@@ -260,10 +260,21 @@ const test = {
 
 for (let question in test) {
   console.log(question)
+  console.log(test[question])
   for (let option in test[question]) {
     console.log(option)
     console.log(test[question][option])
   }
 }
 
-console.log('hola')
+const dni = '12345678D'
+console.log((/^\d{8}[a-z]$/i).test(dni))
+
+const phone = '123456789'
+console.log((/^\d{9}$/).test(phone))
+
+const email = 'fulano@gmail.com'
+console.log((/^(\w+)@(\w+)\.(\w\w+)$/).test(email))
+
+const date = '01/02/1234'
+console.log((/\d{2}[/-]?\d{2}[/-]?\d{4}[/-]?/).test(date))
